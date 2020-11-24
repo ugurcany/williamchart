@@ -1,18 +1,10 @@
 plugins {
     id("com.android.application")
-    id("com.github.triplet.play") version "2.0.0"
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.github.triplet.play'
-
-Properties properties = new Properties()
-File localPropertiesFiles = project.rootProject.file('local.properties')
-
-if (localPropertiesFiles.exists())
-    properties.load(localPropertiesFiles.newDataInputStream())
 
 android {
 
@@ -27,23 +19,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    if (localPropertiesFiles.exists()) {
-        signingConfigs {
-            release {
-                storeFile file(properties.getProperty("storeFile"))
-                storePassword properties.getProperty("storePassword")
-                keyAlias properties.getProperty("keyAlias")
-                keyPassword properties.getProperty("keyPassword")
-            }
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            if (localPropertiesFiles.exists())
-                signingConfig signingConfigs.release
         }
     }
 }
@@ -51,17 +30,10 @@ android {
 dependencies {
     implementation project(path: ':williamchart')
     implementation project(path: ':slidertooltip')
-    //implementation "com.diogobernardino:williamchart:$rootProject.williamchartVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test:runner:1.3.0'
-}
-
-play {
-    serviceAccountEmail = properties.containsKey("play.accountEmail") ? properties.getProperty("play.accountEmail") : "dummyPlayAccountEmail"
-    serviceAccountCredentials = file(properties.containsKey("play.p12") ? properties.getProperty("play.p12") : "dummyPlayP12")
-    track = 'alpha'
 }
