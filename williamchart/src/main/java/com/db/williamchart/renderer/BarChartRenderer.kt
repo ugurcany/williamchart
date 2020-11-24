@@ -204,14 +204,12 @@ class BarChartRenderer(
         val halfLabelHeight = painter.measureLabelHeight(chartConfiguration.labelsSize) / 2
         val heightBetweenLabels =
             (innerFrame.bottom - innerFrame.top - halfLabelHeight) / RendererConstants.defaultScaleNumberOfSteps
-        val labelsBottomPosition = innerFrame.bottom - halfLabelHeight
 
-        yLabels.forEachIndexed { index, label ->
+        yLabels.reversed().forEachIndexed { index, label ->
             label.screenPositionX =
-                innerFrame.left -
-                        RendererConstants.labelsPaddingToInnerChart -
+                innerFrame.left - RendererConstants.labelsPaddingToInnerChart -
                         painter.measureLabelWidth(label.label, chartConfiguration.labelsSize) / 2
-            label.screenPositionY = labelsBottomPosition - heightBetweenLabels * index
+            label.screenPositionY = halfLabelHeight + heightBetweenLabels * index
         }
     }
 
