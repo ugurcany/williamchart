@@ -189,7 +189,7 @@ class BarChartRenderer(
         val labelsRightPosition = innerFrame.right - halfBarWidth
         val widthBetweenLabels = (labelsRightPosition - labelsLeftPosition) / (xLabels.size - 1)
         val xLabelsVerticalPosition =
-            innerFrame.bottom - painter.measureLabelAscent(chartConfiguration.labelsSize)
+            innerFrame.bottom + RendererConstants.labelsPaddingToInnerChart / 2
 
         xLabels.forEachIndexed { index, label ->
             label.screenPositionX = labelsLeftPosition + (widthBetweenLabels * index)
